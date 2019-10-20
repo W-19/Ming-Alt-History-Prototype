@@ -25,12 +25,9 @@ var controls;
 function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
 
-    //game.load.image('shovel', shovel.path);
-    this.load.image('background', 'img/background.png');
-    //game.load.spritesheet('granny', 'assets/img/SpriteSheets/Gardener_NEW_SpriteSheet.png', 102, 148);
-    this.load.spritesheet('player', 'img/player_anim.png', {frameWidth: 50, frameHeight: 50});
+    this.load.image('background', 'assets/img/background.png');
+    this.load.spritesheet('player', 'assets/img/player_anim.png', {frameWidth: 50, frameHeight: 50});
     //game.load.tilemap('level', 'assets/tilemaps/FinalTilemap2.json', null, Phaser.Tilemap.TILED_JSON);
-
     //game.load.audio('game music', 'assets/audio/Old GB Song.ogg');
 
 }
