@@ -86,7 +86,7 @@ function create() {
 function update() {
 
 	if(controls.left.isDown && !controls.right.isDown){ // moving left
-		if(background.x - background.width/2 < 0){ // move the background
+		if(background.x - background.width/2 < 0 && !(player.x > config.width/2)){ // move the background
 			background.setVelocityX(160);
 			player.setVelocityX(0);
 		}
@@ -98,7 +98,7 @@ function update() {
 		player.anims.play('left', true);
 	}
 	else if(controls.right.isDown){ // moving right
-		if(background.x > background.width - config.width){
+		if(background.x > background.width - config.width && !(player.x < config.width/2)){
 			background.setVelocityX(-160);
 			player.setVelocityX(0);
 		}
@@ -115,7 +115,7 @@ function update() {
     }
 
 	if(controls.up.isDown && !controls.down.isDown){ // moving up
-		if(background.y - background.height/2 < 0){
+		if(background.y - background.height/2 < 0 && !(player.y > config.height/2)){
 			background.setVelocityY(120);
 			player.setVelocityY(0);
 		}
@@ -127,7 +127,7 @@ function update() {
 		player.anims.play('up', true);
 	}
 	else if(controls.down.isDown){ // moving down
-		if(background.y + background.height/2 > config.height){
+		if(background.y + background.height/2 > config.height && !(player.y < config.height/2)){
 			background.setVelocityY(-120);
 			player.setVelocityY(0);
 		}
