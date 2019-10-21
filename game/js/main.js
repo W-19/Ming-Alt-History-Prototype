@@ -25,7 +25,7 @@ var controls;
 function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
 
-    this.load.image('background', 'assets/img/background.png');
+    this.load.image('background', 'assets/img/CoC field.png');
     this.load.spritesheet('player', 'assets/img/player_anim.png', {frameWidth: 50, frameHeight: 50});
     //game.load.tilemap('level', 'assets/tilemaps/FinalTilemap2.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.audio('game music', 'assets/audio/Old GB Song.ogg');
@@ -34,11 +34,12 @@ function preload() {
 
 function create() {
 
-    background = this.physics.add.image(0, 0, 'background').setOrigin(0, 0);
-    background.setSize(800, 200, true).setOffset(0, 0);
+    background = this.physics.add.image(config.width/2, config.height/2, 'background');
+	background.setOrigin(0.5, 0.5);
     background.setImmovable(true);
 
-    player = this.physics.add.sprite(50, 450, 'player');
+    player = this.physics.add.sprite(config.width/2, config.height/2, 'player');
+	player.setOrigin(0.5, 0.5);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
@@ -78,38 +79,71 @@ function create() {
 
     controls = this.input.keyboard.createCursorKeys();
 
-    this.physics.add.collider(player, background);
-
+    //this.physics.add.collider(player, background);
 
 }
 
 function update() {
 
-    if (controls.left.isDown) {
-        player.setVelocityX(-160);
-        player.anims.play('left', true);
+	if(controls.left.isDown && !controls.right.isDown){ // moving left
+		if(background.x - background.width/2 < 0){ // move the background
+			background.setVelocityX(160);
+			player.setVelocityX(0);
+		}
+		else{ // move the player
+			background.setVelocityX(0);
+			player.setVelocityX(-160);
+		}
 
-    } else if (controls.right.isDown) {
-        player.setVelocityX(160);
-        player.anims.play('right', true);
+		player.anims.play('left', true);
+	}
+	else if(controls.right.isDown){ // moving right
+		if(background.x > background.width - config.width){
+			background.setVelocityX(-160);
+			player.setVelocityX(0);
+		}
+		else{
+			background.setVelocityX(0);
+			player.setVelocityX(160);
+		}
 
-    } else {
+		player.anims.play('right', true);
+	}
+	else {
+		background.setVelocityX(0);
         player.setVelocityX(0);
     }
 
-    if (controls.up.isDown) {
-        player.setVelocityY(-160);
-        player.anims.play('up', true);
+	if(controls.up.isDown && !controls.down.isDown){ // moving up
+		if(background.y - background.height/2 < 0){
+			background.setVelocityY(120);
+			player.setVelocityY(0);
+		}
+		else{
+			background.setVelocityY(0);
+			player.setVelocityY(-120);
+		}
 
-    } else if (controls.down.isDown) {
-        player.setVelocityY(160);
-        player.anims.play('down', true);
+		player.anims.play('up', true);
+	}
+	else if(controls.down.isDown){ // moving down
+		if(background.y + background.height/2 > config.height){
+			background.setVelocityY(-120);
+			player.setVelocityY(0);
+		}
+		else{
+			background.setVelocityY(0);
+			player.setVelocityY(120);
+		}
 
-    } else {
+		player.anims.play('down', true);
+	}
+	else {
+		background.setVelocityY(0);
         player.setVelocityY(0);
     }
 
-    if (!controls.up.isDown && !controls.down.isDown && !controls.right.isDown && !controls.left.isDown) {
+	if (!controls.up.isDown && !controls.down.isDown && !controls.right.isDown && !controls.left.isDown) {
         player.setVelocityX(0);
         player.setVelocityY(0);
         player.anims.play('turn', true)
