@@ -7,7 +7,7 @@ var config = {
     multiTexture: true,
     physics: {
         default: 'arcade',
-        arcade: {debug: true}
+        arcade: {debug: false}
     },
     scene: {
         preload: preload,
@@ -148,4 +148,12 @@ function update() {
         player.setVelocityY(0);
         player.anims.play('turn', true)
     }
+	else if((controls.left.isDown || controls.right.isDown) && (controls.up.isDown || controls.down.isDown)){
+		// it's not "velocity.(x/y) /= sqrt(2)" because vertical movement is 25% less than horizontal movement.
+		// 0.82 is just an approximation of what it should be; idk how to calculate the correct amount.
+		// also, the else-if above can't just use velocities since sometimes it's the BG that's moving.
+		player.body.velocity.x *= 0.82;
+		player.body.velocity.y *= 0.82;
+		console.log("diagonally");
+	}
 }
