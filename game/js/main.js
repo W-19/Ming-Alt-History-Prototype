@@ -154,6 +154,5 @@ function update() {
 		// also, the else-if above can't just use velocities since sometimes it's the BG that's moving.
 		player.body.velocity.x *= 0.82;
 		player.body.velocity.y *= 0.82;
-		console.log("diagonally");
 	}
 }
