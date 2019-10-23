@@ -27,7 +27,7 @@ function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
 
     this.load.image('background', 'assets/img/CoC field.png');
-    this.load.spritesheet('player', 'assets/img/player_anim.png', {frameWidth: 50, frameHeight: 50});
+    this.load.spritesheet('characters', 'assets/img/characters.png', {frameWidth: 100, frameHeight: 100});
 	this.load.image('enemy1-temp', 'assets/img/enemy1.png')
     //game.load.tilemap('level', 'assets/tilemaps/FinalTilemap2.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.audio('game music', 'assets/audio/Old GB Song.ogg');
@@ -40,7 +40,7 @@ function create() {
 	background.setOrigin(0.5, 0.5);
     background.setImmovable(true);
 
-    player = this.physics.add.sprite(config.width/2, config.height/2, 'player');
+    player = this.physics.add.sprite(config.width/2, config.height/2, 'characters');
 	player.setOrigin(0.5, 0.5);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -50,34 +50,34 @@ function create() {
 
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('player', {start: 0, end: 0}),
+        frames: this.anims.generateFrameNumbers('characters', {start: 11, end: 11}),
         frameRate: 10,
         repeat: -1
     });
 
     this.anims.create({
         key: 'turn',
-        frames: [{key: 'player', frame: 2}],
+        frames: [{key: 'characters', frame: 8}],
         frameRate: 20
     });
 
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('player', {start: 4, end: 4}),
+        frames: this.anims.generateFrameNumbers('characters', {start: 5, end: 6}),
         frameRate: 10,
         repeat: -1
     });
 
     this.anims.create({
         key: 'up',
-        frames: this.anims.generateFrameNumbers('player', {start: 1, end: 1}),
+        frames: this.anims.generateFrameNumbers('characters', {start: 15, end: 16}),
         frameRate: 10,
         repeat: -1
     });
 
     this.anims.create({
         key: 'down',
-        frames: this.anims.generateFrameNumbers('player', {start: 3, end: 3}),
+        frames: this.anims.generateFrameNumbers('characters', {start: 3, end: 3}),
         frameRate: 10,
         repeat: -1
     });
