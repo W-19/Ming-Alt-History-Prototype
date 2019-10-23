@@ -27,7 +27,7 @@ var controls;
 function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
 
-    this.load.image('background', 'assets/img/CoC field.png');
+    this.load.image('background', 'assets/img/city_building.png');
     this.load.spritesheet('characters', 'assets/img/characters.png', {frameWidth: 100, frameHeight: 100});
 	this.load.image('enemy1-temp', 'assets/img/enemy1.png')
     //game.load.tilemap('level', 'assets/tilemaps/FinalTilemap2.json', null, Phaser.Tilemap.TILED_JSON);
@@ -104,7 +104,7 @@ function update() {
 		player.anims.play('left', true);
 	}
 	else if(controls.right.isDown){ // moving right
-		if(background.x > background.width - config.width && !(player.x < config.width/2)){
+		if(background.x + background.width/2 > config.width && !(player.x < config.width/2)){
 			background.setVelocityX(-PLAYER_MS);
 			player.setVelocityX(0);
 		}
