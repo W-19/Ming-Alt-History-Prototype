@@ -20,6 +20,7 @@ var game = new Phaser.Game(config);
 
 var background;
 var player;
+var enemies;
 var controls;
 
 function preload() {
@@ -27,6 +28,7 @@ function preload() {
 
     this.load.image('background', 'assets/img/CoC field.png');
     this.load.spritesheet('player', 'assets/img/player_anim.png', {frameWidth: 50, frameHeight: 50});
+	this.load.image('enemy1-temp', 'assets/img/enemy1.png')
     //game.load.tilemap('level', 'assets/tilemaps/FinalTilemap2.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.audio('game music', 'assets/audio/Old GB Song.ogg');
 
@@ -42,6 +44,9 @@ function create() {
 	player.setOrigin(0.5, 0.5);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
+
+	enemies = this.physics.add.group({classType: Enemy1, runChildUpdate: true});
+	testEnemy = enemies.create(200, 200);
 
     this.anims.create({
         key: 'left',
