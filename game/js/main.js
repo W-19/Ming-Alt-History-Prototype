@@ -28,6 +28,7 @@ function preload() {
 
     this.load.image('background', 'assets/img/CoC field.png');
     this.load.spritesheet('player', 'assets/img/player_anim.png', {frameWidth: 50, frameHeight: 50});
+	this.load.image('enemy1-temp', 'assets/img/enemy1.png')
     //game.load.tilemap('level', 'assets/tilemaps/FinalTilemap2.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.audio('game music', 'assets/audio/Old GB Song.ogg');
 
