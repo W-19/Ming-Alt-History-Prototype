@@ -7,7 +7,7 @@ var config = {
     multiTexture: true,
     physics: {
         default: 'arcade',
-        arcade: {debug: false}
+        arcade: {debug: true}
     },
     scene: {
         preload: preload,
@@ -84,7 +84,7 @@ function create() {
 
     controls = this.input.keyboard.createCursorKeys();
 
-    //this.physics.add.collider(player, background);
+    this.physics.add.collider(player, enemies);
 
 }
 

@@ -7,7 +7,7 @@ var Enemy1 = new Phaser.Class({
     function Enemy1(scene, x, y){
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy1-temp');
 
-		this.moveSpeed = 2;
+		this.moveSpeed = 40;
 
 		// I guess we can set the spawnpoint like this?
 		this.x = x;
@@ -17,7 +17,7 @@ var Enemy1 = new Phaser.Class({
 
     update: function(){
 		// Move towards the player
-		this.setPosition(this.x + this.moveSpeed*(this.x < player.x ? 1 : -1), this.y + this.moveSpeed*(this.y < player.y ? 1 : -1));
+		this.body.setVelocity(this.moveSpeed*(this.x < player.x ? 1 : -1), this.moveSpeed*(this.y < player.y ? 1 : -1));
     },
 
 	touchPlayer: function(){
