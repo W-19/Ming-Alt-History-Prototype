@@ -12,7 +12,7 @@ var Enemy1 = new Phaser.Class({
     },
 
     update: function(){
-		// move around randomly, not accounting for how the camera works
+		// Move towards the player
 		this.setPosition(this.x + this.moveSpeed*(this.x < player.x ? 1 : -1), this.y + this.moveSpeed*(this.y < player.y ? 1 : -1));
     },
 
