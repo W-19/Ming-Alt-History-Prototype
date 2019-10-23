@@ -4,10 +4,14 @@ var Enemy1 = new Phaser.Class({
 
     initialize:
 
-    function Enemy1(scene){
+    function Enemy1(scene, x, y){
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy1-temp');
 
 		this.moveSpeed = 2;
+
+		// I guess we can set the spawnpoint like this?
+		this.x = x;
+		this.y = y;
 		//this.health = 3;
     },
 
