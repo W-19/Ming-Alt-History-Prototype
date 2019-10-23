@@ -20,6 +20,7 @@ var game = new Phaser.Game(config);
 
 var background;
 var player;
+var PLAYER_MS = 160; // ms = MoveSpeed
 var enemies;
 var controls;
 
@@ -92,24 +93,24 @@ function update() {
 
 	if(controls.left.isDown && !controls.right.isDown){ // moving left
 		if(background.x - background.width/2 < 0 && !(player.x > config.width/2)){ // move the background
-			background.setVelocityX(160);
+			background.setVelocityX(PLAYER_MS);
 			player.setVelocityX(0);
 		}
 		else{ // move the player
 			background.setVelocityX(0);
-			player.setVelocityX(-160);
+			player.setVelocityX(-PLAYER_MS);
 		}
 
 		player.anims.play('left', true);
 	}
 	else if(controls.right.isDown){ // moving right
 		if(background.x > background.width - config.width && !(player.x < config.width/2)){
-			background.setVelocityX(-160);
+			background.setVelocityX(-PLAYER_MS);
 			player.setVelocityX(0);
 		}
 		else{
 			background.setVelocityX(0);
-			player.setVelocityX(160);
+			player.setVelocityX(PLAYER_MS);
 		}
 
 		player.anims.play('right', true);
@@ -121,24 +122,24 @@ function update() {
 
 	if(controls.up.isDown && !controls.down.isDown){ // moving up
 		if(background.y - background.height/2 < 0 && !(player.y > config.height/2)){
-			background.setVelocityY(120);
+			background.setVelocityY(PLAYER_MS*0.75);
 			player.setVelocityY(0);
 		}
 		else{
 			background.setVelocityY(0);
-			player.setVelocityY(-120);
+			player.setVelocityY(-PLAYER_MS*0.75);
 		}
 
 		player.anims.play('up', true);
 	}
 	else if(controls.down.isDown){ // moving down
 		if(background.y + background.height/2 > config.height && !(player.y < config.height/2)){
-			background.setVelocityY(-120);
+			background.setVelocityY(-PLAYER_MS*0.75);
 			player.setVelocityY(0);
 		}
 		else{
 			background.setVelocityY(0);
-			player.setVelocityY(120);
+			player.setVelocityY(PLAYER_MS*0.75);
 		}
 
 		player.anims.play('down', true);

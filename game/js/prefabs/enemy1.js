@@ -17,7 +17,10 @@ var Enemy1 = new Phaser.Class({
 
     update: function(){
 		// Move towards the player
-		this.body.setVelocity(this.moveSpeed*(this.x < player.x ? 1 : -1), this.moveSpeed*(this.y < player.y ? 1 : -1));
+		this.body.setVelocity(
+				this.moveSpeed*(this.x < player.x ? 1 : -1) + background.body.velocity.x,
+				this.moveSpeed*(this.y < player.y ? 1 : -1) + background.body.velocity.y
+		);
     },
 
 	touchPlayer: function(){
