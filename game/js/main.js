@@ -20,6 +20,7 @@ var game = new Phaser.Game(config);
 
 var background;
 var player;
+var enemies;
 var controls;
 
 function preload() {
@@ -42,6 +43,9 @@ function create() {
 	player.setOrigin(0.5, 0.5);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
+
+	enemies = this.physics.add.group({classType: Enemy1, runChildUpdate: true});
+	testEnemy = enemies.create(200, 200);
 
     this.anims.create({
         key: 'left',
