@@ -109,6 +109,8 @@ function update() {
 		});
     }
 
+	if(playerInsideBuildings()) console.log("Player is in the buildings!");
+
 	if(controls.left.isDown && !controls.right.isDown){ // moving left
 		if(background.x - background.width/2 < 0 && !(player.x > config.width/2)){ // move the background
 			background.setVelocityX(PLAYER_MS);
@@ -182,4 +184,20 @@ function update() {
         scene = 1;
         game.cameras.main.fadeOut(3000);
     }
+}
+
+// Checks whether the player is in the top-left and bottom right triangles, from points covering
+// 50% of horizontal and 70% of vertical
+function playerInsideBuildings(){
+	return (player.x < background.x && player.y < background.y+background.height*0.2 &&
+			Phaser.Math.Angle.Between(background.x, background.y-background.height/2, player.x, player.y) >
+			Phaser.Math.Angle.Between(background.x, background.y-background.height/2, background.x-background.width/2, background.y+background.height*0.2))
+			||
+			(player.x > background.x && player.y > background.y-background.height*0.2 &&
+			/*
+			Phaser.Math.Angle.Between(background.x, background.y+background.height/2, player.x, player.y) <
+			Phaser.Math.Angle.Between(background.x, background.y+background.height/2, background.x+background.width/2, background.y-background.height*0.2))
+			*/
+			player.y > -1*(player.x-background.x)+(background.y+background.height/2)) // simple mx+b to replace the angle thing above
+			;
 }
