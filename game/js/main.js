@@ -20,9 +20,10 @@ var game = new Phaser.Game(config);
 
 var background;
 var player;
-var PLAYER_MS = 160; // ms = MoveSpeed
+var PLAYER_MS = 240; // ms = MoveSpeed
 var enemies;
 var controls;
+var keyAttack;
 
 function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
@@ -85,12 +86,21 @@ function create() {
     });
 
     controls = this.input.keyboard.createCursorKeys();
+	keyAttack = this.input.keyboard.addKey('F');
 
     this.physics.add.collider(player, enemies);
 
 }
 
 function update() {
+
+	if (Phaser.Input.Keyboard.JustDown(keyAttack)){
+		enemies.getChildren().forEach(function(enemy){
+			if(Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y) < 80){
+				enemy.takeDamage(1, player);
+			}
+		});
+    }
 
 	if(controls.left.isDown && !controls.right.isDown){ // moving left
 		if(background.x - background.width/2 < 0 && !(player.x > config.width/2)){ // move the background

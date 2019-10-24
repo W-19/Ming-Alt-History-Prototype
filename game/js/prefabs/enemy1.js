@@ -12,7 +12,7 @@ var Enemy1 = new Phaser.Class({
 		// I guess we can set the spawnpoint like this?
 		this.x = x;
 		this.y = y;
-		//this.health = 3;
+		this.health = 3;
     },
 
     update: function(){
@@ -23,7 +23,11 @@ var Enemy1 = new Phaser.Class({
 		);
     },
 
-	touchPlayer: function(){
-		console.log("contact");
+	takeDamage: function(amount, source){
+		console.log("enemy damaged!");
+		this.health -= amount;
+		if(this.health <= 0){
+			this.destroy();
+		}
 	}
 });
