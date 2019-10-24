@@ -28,7 +28,8 @@ function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
 
     this.load.image('background', 'assets/img/city_building.png');
-    this.load.spritesheet('characters', 'assets/img/characters.png', {frameWidth: 100, frameHeight: 100});
+	this.load.spritesheet('characters', 'assets/img/characters.png', {frameWidth: 100, frameHeight: 100});
+    //this.load.atlas('characters', 'assets/img/characters.png', 'assets/img/characters.json');
 	this.load.image('enemy1-temp', 'assets/img/enemy1.png')
     //game.load.tilemap('level', 'assets/tilemaps/FinalTilemap2.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.audio('game music', 'assets/audio/Old GB Song.ogg');
