@@ -91,10 +91,12 @@ function create() {
 }
 
 function update() {
+	// Changing scenes
     if (this.input.keyboard.checkDown(cursors, 1000) && scene === 0) {
         changeScenes(this);
     }
 
+	// Attacking
 	if (Phaser.Input.Keyboard.JustDown(keyAttack)){
 		enemies.getChildren().forEach(function(enemy){
 			if(Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y) < 80){
@@ -103,6 +105,7 @@ function update() {
 		});
     }
 
+	// Moving
 	if(controls.left.isDown && !controls.right.isDown){ // moving left
 		if(background.x - background.width/2 < 0 && !(player.x > config.width/2)){ // move the background
 			background.setVelocityX(PLAYER_MS);
@@ -168,18 +171,20 @@ function update() {
         // also, the else-if above can't just use velocities since sometimes it's the BG that's moving.
         player.body.velocity.x *= 0.82;
         player.body.velocity.y *= 0.82;
+		background.body.velocity.x *= 0.82;
+		background.body.velocity.y *= 0.82;
     }
 
 	// Bounce the player out of the buildings
 	if(playerInsideBuildings()){
 		//console.log("Player is in the buildings!");
 		if(player.x < background.x){
-			player.setVelocityX(PLAYER_MS);
-			player.setVelocityY(PLAYER_MS * 0.75);
+			player.setVelocityX(PLAYER_MS * 0.4);
+			player.setVelocityY(PLAYER_MS * 0.3);
 		}
 		else{
-			player.setVelocityX(-PLAYER_MS);
-			player.setVelocityY(-PLAYER_MS * 0.75);
+			player.setVelocityX(-PLAYER_MS * 0.4);
+			player.setVelocityY(-PLAYER_MS * 0.3);
 		}
 	}
 
