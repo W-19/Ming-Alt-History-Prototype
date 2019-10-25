@@ -20,7 +20,7 @@ var game = new Phaser.Game(config);
 
 var background;
 var player;
-var PLAYER_MS = 240; // ms = MoveSpeed
+var PLAYER_MS = 320; // ms = MoveSpeed
 var enemies;
 var controls;
 var keyAttack;
@@ -31,7 +31,9 @@ function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
 
     this.load.image('background', 'assets/img/city_building.png');
-    this.load.spritesheet('characters', 'assets/img/characters.png', {frameWidth: 100, frameHeight: 100});
+    //this.load.spritesheet('characters', 'assets/img/characters.png', {frameWidth: 100, frameHeight: 100});
+	this.load.spritesheet('player', 'assets/img/player.png', {frameWidth: 100, frameHeight: 100});
+	this.load.spritesheet('enemy', 'assets/img/enemy.png', {frameWidth: 100, frameHeight: 100});
     //this.load.atlas('characters', 'assets/img/characters.png', 'assets/img/characters.json');
     this.load.image('enemy1-temp', 'assets/img/enemy1.png')
     //game.load.tilemap('level', 'assets/tilemaps/FinalTilemap2.json', null, Phaser.Tilemap.TILED_JSON);
@@ -47,7 +49,7 @@ function create() {
     background.setOrigin(0.5, 0.5);
     background.setImmovable(true);
 
-    player = this.physics.add.sprite(config.width / 2, config.height / 2, 'characters');
+    player = this.physics.add.sprite(config.width / 2, config.height / 2, 'player');
     player.setOrigin(0.5, 0.5);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -56,38 +58,30 @@ function create() {
     testEnemy = enemies.create(200, 200);
 
     this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('characters', {start: 11, end: 11}),
+        key: 'player left',
+        frames: this.anims.generateFrameNumbers('player', {start: 8, end: 11}),
         frameRate: 10,
         repeat: -1
     });
-
     this.anims.create({
-        key: 'turn',
-        frames: [{key: 'characters', frame: 8}],
-        frameRate: 20
-    });
-
-    this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('characters', {start: 5, end: 6}),
+        key: 'player right',
+        frames: this.anims.generateFrameNumbers('player', {start: 12, end: 15}),
         frameRate: 10,
         repeat: -1
     });
-
     this.anims.create({
-        key: 'up',
-        frames: this.anims.generateFrameNumbers('characters', {start: 15, end: 16}),
+        key: 'player up',
+        frames: this.anims.generateFrameNumbers('player', {start: 2, end: 4}),
         frameRate: 10,
         repeat: -1
     });
-
     this.anims.create({
-        key: 'down',
-        frames: this.anims.generateFrameNumbers('characters', {start: 3, end: 3}),
+        key: 'player down',
+        frames: this.anims.generateFrameNumbers('player', {start: 5, end: 7}),
         frameRate: 10,
         repeat: -1
     });
+	player.anims.play('player down', true);
 
     controls = this.input.keyboard.createCursorKeys();
 	keyAttack = this.input.keyboard.addKey('F');
@@ -119,7 +113,7 @@ function update() {
 			player.setVelocityX(-PLAYER_MS);
 		}
 
-		player.anims.play('left', true);
+		player.anims.play('player left', true);
 	}
 	else if(controls.right.isDown){ // moving right
 		if(background.x + background.width/2 > config.width && !(player.x < config.width/2)){
@@ -131,7 +125,7 @@ function update() {
 			player.setVelocityX(PLAYER_MS);
 		}
 
-		player.anims.play('right', true);
+		player.anims.play('player right', true);
 	}
 	else {
 		background.setVelocityX(0);
@@ -147,7 +141,7 @@ function update() {
             player.setVelocityY(-PLAYER_MS * 0.75);
         }
 
-        player.anims.play('up', true);
+        if(!controls.left.isDown && !controls.right.isDown) player.anims.play('player up', true);
     } else if (controls.down.isDown) { // moving down
         if (background.y + background.height / 2 > config.height && !(player.y < config.height / 2)) {
             background.setVelocityY(-PLAYER_MS * 0.75);
@@ -157,7 +151,7 @@ function update() {
             player.setVelocityY(PLAYER_MS * 0.75);
         }
 
-        player.anims.play('down', true);
+        if(!controls.left.isDown && !controls.right.isDown) player.anims.play('player down', true);
     } else {
         background.setVelocityY(0);
         player.setVelocityY(0);
@@ -166,7 +160,8 @@ function update() {
     if (!controls.up.isDown && !controls.down.isDown && !controls.right.isDown && !controls.left.isDown) {
         player.setVelocityX(0);
         player.setVelocityY(0);
-        player.anims.play('turn', true)
+		player.anims.setProgress(0);
+		player.anims.stop();
     } else if ((controls.left.isDown || controls.right.isDown) && (controls.up.isDown || controls.down.isDown)) {
         // it's not "velocity.(x/y) /= sqrt(2)" because vertical movement is 25% less than horizontal movement.
         // 0.82 is just an approximation of what it should be; idk how to calculate the correct amount.
