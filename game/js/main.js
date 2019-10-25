@@ -109,8 +109,6 @@ function update() {
 		});
     }
 
-	if(playerInsideBuildings()) console.log("Player is in the buildings!");
-
 	if(controls.left.isDown && !controls.right.isDown){ // moving left
 		if(background.x - background.width/2 < 0 && !(player.x > config.width/2)){ // move the background
 			background.setVelocityX(PLAYER_MS);
@@ -176,6 +174,19 @@ function update() {
         player.body.velocity.x *= 0.82;
         player.body.velocity.y *= 0.82;
     }
+
+	// Bounce the player out of the buildings
+	if(playerInsideBuildings()){
+		//console.log("Player is in the buildings!");
+		if(player.x < background.x){
+			player.setVelocityX(PLAYER_MS);
+			player.setVelocityY(PLAYER_MS * 0.75);
+		}
+		else{
+			player.setVelocityX(-PLAYER_MS);
+			player.setVelocityY(-PLAYER_MS * 0.75);
+		}
+	}
 
     function changeScenes(game) {
         game.cameras.main.once('camerafadeoutcomplete', function (camera) {
