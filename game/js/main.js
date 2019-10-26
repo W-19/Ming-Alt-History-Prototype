@@ -33,7 +33,7 @@ var scene = 0;
 function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
 
-    this.load.image('background', 'assets/img/city_building.png');
+    this.load.image('background', 'assets/img/city street & buildings.png');
     //this.load.spritesheet('characters', 'assets/img/characters.png', {frameWidth: 100, frameHeight: 100});
 	this.load.spritesheet('player', 'assets/img/player.png', {frameWidth: 100, frameHeight: 100});
 	this.load.spritesheet('enemy', 'assets/img/enemy.png', {frameWidth: 100, frameHeight: 100});
