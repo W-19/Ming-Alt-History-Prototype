@@ -2,6 +2,7 @@
 var config = {
     width: 800,
     height: 600,
+	parent: 'canvas-holder',
     renderer: Phaser.AUTO,
     antialias: true,
     multiTexture: true,
