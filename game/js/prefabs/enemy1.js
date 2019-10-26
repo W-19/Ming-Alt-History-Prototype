@@ -6,10 +6,8 @@ var Enemy1 = new Phaser.Class({
 
     function Enemy1(scene, x, y){
         Phaser.GameObjects.Sprite.call(this, scene, x, y, 'enemy1');
-		this.setSize(60, 80); // make a more reasonable collision box
-		// the origin can't be set in here for some reason so we set it in main
 
-		this.moveSpeed = 40;
+		this.moveSpeed = 50;
 
 		// I guess we can set the spawnpoint like this?
 		this.x = x;

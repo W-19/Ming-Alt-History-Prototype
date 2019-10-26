@@ -35,7 +35,7 @@ function preload() {
 
     this.load.image('background', 'assets/img/city street & buildings.png');
 	this.load.spritesheet('player', 'assets/img/player.png', {frameWidth: 100, frameHeight: 100});
-	this.load.spritesheet('enemy1', 'assets/img/enemy.png', {frameWidth: 100, frameHeight: 100});
+	this.load.spritesheet('enemy1', 'assets/img/enemy.png', {frameWidth: 47, frameHeight: 73});
     //this.load.atlas('characters', 'assets/img/characters.png', 'assets/img/characters.json');
     //this.load.image('enemy1-temp', 'assets/img/enemy1.png')
     //game.load.audio('game music', 'assets/audio/Old GB Song.ogg');
