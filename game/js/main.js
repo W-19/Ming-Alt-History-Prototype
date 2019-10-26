@@ -8,7 +8,7 @@ var config = {
     multiTexture: true,
     physics: {
         default: 'arcade',
-        arcade: {debug: true}
+        arcade: {debug: false}
     },
     scene: {
         preload: preload,
@@ -22,9 +22,11 @@ var game = new Phaser.Game(config);
 var background;
 var player;
 var PLAYER_MS = 320; // ms = MoveSpeed
+var PLAYER_ATTACK_DURATION = 60;
 var enemies;
 var controls;
 var keyAttack;
+var playerAttackCooldown = 0;
 var cursors;
 var scene = 0;
 
@@ -43,7 +45,6 @@ function preload() {
 }
 
 function create() {
-
     cursors = this.input.keyboard.addKey('Enter');
 
     background = this.physics.add.image(config.width / 2, config.height / 2, 'background');
@@ -51,6 +52,7 @@ function create() {
     background.setImmovable(true);
 
     player = this.physics.add.sprite(config.width / 2, config.height / 2, 'player');
+	player.setSize(40, 90); // make the hitbox more closely match the actual player
     player.setOrigin(0.5, 0.5);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -82,6 +84,12 @@ function create() {
         frameRate: 10,
         repeat: -1
     });
+	this.anims.create({
+        key: 'player attack',
+        frames: this.anims.generateFrameNumbers('player', {start: 0, end: 1}),
+        frameRate: Math.floor(2*(PLAYER_ATTACK_DURATION/60)),
+        repeat: -1
+    });
 	player.anims.play('player down', true);
 
     controls = this.input.keyboard.createCursorKeys();
@@ -98,15 +106,44 @@ function update() {
     }
 
 	// Attacking
-	if (Phaser.Input.Keyboard.JustDown(keyAttack)){
-		enemies.getChildren().forEach(function(enemy){
-			if(Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y) < 80){
-				enemy.takeDamage(1, player);
-			}
-		});
+	if (playerAttackCooldown == 0 && Phaser.Input.Keyboard.JustDown(keyAttack)){
+		playerAttackCooldown = PLAYER_ATTACK_DURATION;
+		player.setVelocityX(0);
+		player.setVelocityY(0);
+		background.setVelocityX(0);
+		background.setVelocityY(0);
+		player.anims.play('player attack');
     }
 
-	// Moving
+	// Moving (only if not on attack cooldown)
+	if(playerAttackCooldown > 0){
+		if(playerAttackCooldown == PLAYER_ATTACK_DURATION){
+			// Slash attack around the player
+			enemies.getChildren().forEach(function(enemy){
+				if(Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y) < 80){
+					enemy.takeDamage(2, player);
+				}
+			});
+		}
+		else if(playerAttackCooldown == Math.floor(PLAYER_ATTACK_DURATION/2)){
+			// Punch attack to the right of the player
+			enemies.getChildren().forEach(function(enemy){
+				if(Math.abs(enemy.y-player.y) < enemy.height/2 + player.height/2 && enemy.x > player.x && enemy.x < player.x + 150){
+					enemy.takeDamage(4, player);
+				}
+			});
+		}
+		else if(playerAttackCooldown == 1){
+			player.anims.play('player down', true);
+		}
+		playerAttackCooldown--;
+	}
+	else{
+		processPlayerMovement();
+	}
+}
+
+function processPlayerMovement(){
 	if(controls.left.isDown && !controls.right.isDown){ // moving left
 		if(background.x - background.width/2 < 0 && !(player.x > config.width/2)){ // move the background
 			background.setVelocityX(PLAYER_MS);
@@ -188,14 +225,6 @@ function update() {
 			player.setVelocityY(-PLAYER_MS * 0.3);
 		}
 	}
-
-    function changeScenes(game) {
-        game.cameras.main.once('camerafadeoutcomplete', function (camera) {
-            camera.fadeIn(6000);
-        });
-        scene = 1;
-        game.cameras.main.fadeOut(3000);
-    }
 }
 
 // Checks whether the player is in the top-left and bottom right triangles, from points covering
@@ -212,4 +241,12 @@ function playerInsideBuildings(){
 			*/
 			player.y > -1*(player.x-background.x)+(background.y+background.height/2)) // simple mx+b to replace the angle thing above
 			;
+}
+
+function changeScenes(game) {
+	game.cameras.main.once('camerafadeoutcomplete', function (camera) {
+		camera.fadeIn(6000);
+	});
+	scene = 1;
+	game.cameras.main.fadeOut(3000);
 }

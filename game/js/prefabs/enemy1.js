@@ -12,7 +12,7 @@ var Enemy1 = new Phaser.Class({
 		// I guess we can set the spawnpoint like this?
 		this.x = x;
 		this.y = y;
-		this.health = 3;
+		this.health = 7;
     },
 
     update: function(){
