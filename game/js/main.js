@@ -8,7 +8,7 @@ var config = {
     multiTexture: true,
     physics: {
         default: 'arcade',
-        arcade: {debug: false}
+        arcade: {debug: true}
     },
     scene: {
         preload: preload,
@@ -34,12 +34,10 @@ function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
 
     this.load.image('background', 'assets/img/city street & buildings.png');
-    //this.load.spritesheet('characters', 'assets/img/characters.png', {frameWidth: 100, frameHeight: 100});
 	this.load.spritesheet('player', 'assets/img/player.png', {frameWidth: 100, frameHeight: 100});
-	this.load.spritesheet('enemy', 'assets/img/enemy.png', {frameWidth: 100, frameHeight: 100});
+	this.load.spritesheet('enemy1', 'assets/img/enemy.png', {frameWidth: 100, frameHeight: 100});
     //this.load.atlas('characters', 'assets/img/characters.png', 'assets/img/characters.json');
-    this.load.image('enemy1-temp', 'assets/img/enemy1.png')
-    //game.load.tilemap('level', 'assets/tilemaps/FinalTilemap2.json', null, Phaser.Tilemap.TILED_JSON);
+    //this.load.image('enemy1-temp', 'assets/img/enemy1.png')
     //game.load.audio('game music', 'assets/audio/Old GB Song.ogg');
 
 }
@@ -58,7 +56,8 @@ function create() {
     player.setCollideWorldBounds(true);
 
     enemies = this.physics.add.group({classType: Enemy1, runChildUpdate: true});
-    testEnemy = enemies.create(200, 200);
+    enemy1_1 = enemies.create(200, 200);
+	enemy1_1.setOrigin(-0.5, -0.5);
 
     this.anims.create({
         key: 'player left',
@@ -92,6 +91,31 @@ function create() {
     });
 	player.anims.play('player down', true);
 
+	this.anims.create({
+		key: 'enemy1 left',
+		frames: this.anims.generateFrameNumbers('enemy1', {start: 6, end: 8}),
+		frameRate: 10,
+		repeat: -1
+	});
+	this.anims.create({
+		key: 'enemy1 right',
+		frames: this.anims.generateFrameNumbers('enemy1', {start: 9, end: 11}),
+		frameRate: 10,
+		repeat: -1
+	});
+	this.anims.create({
+		key: 'enemy1 up',
+		frames: this.anims.generateFrameNumbers('enemy1', {start: 0, end: 2}),
+		frameRate: 10,
+		repeat: -1
+	});
+	this.anims.create({
+		key: 'enemy1 down',
+		frames: this.anims.generateFrameNumbers('enemy1', {start: 3, end: 5}),
+		frameRate: 10,
+		repeat: -1
+	});
+
     controls = this.input.keyboard.createCursorKeys();
 	keyAttack = this.input.keyboard.addKey('F');
 
@@ -120,7 +144,7 @@ function update() {
 		if(playerAttackCooldown == PLAYER_ATTACK_DURATION){
 			// Slash attack around the player
 			enemies.getChildren().forEach(function(enemy){
-				if(Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y) < 80){
+				if(Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y) < 100){
 					enemy.takeDamage(2, player);
 				}
 			});

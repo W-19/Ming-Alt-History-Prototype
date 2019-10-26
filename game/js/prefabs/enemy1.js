@@ -1,11 +1,13 @@
 // Structure taken from https://gamedevacademy.org/how-to-make-tower-defense-game-with-phaser-3/
 var Enemy1 = new Phaser.Class({
-	Extends: Phaser.GameObjects.Image,
+	Extends: Phaser.GameObjects.Sprite,
 
     initialize:
 
     function Enemy1(scene, x, y){
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy1-temp');
+        Phaser.GameObjects.Sprite.call(this, scene, x, y, 'enemy1');
+		this.setSize(60, 80); // make a more reasonable collision box
+		// the origin can't be set in here for some reason so we set it in main
 
 		this.moveSpeed = 40;
 
@@ -19,8 +21,26 @@ var Enemy1 = new Phaser.Class({
 		// Move towards the player
 		this.body.setVelocity(
 				this.moveSpeed*(this.x < player.x ? 1 : -1) + background.body.velocity.x,
-				this.moveSpeed*(this.y < player.y ? 1 : -1) + background.body.velocity.y
+				this.moveSpeed*(this.y < player.y ? 0.75 : -0.75) + background.body.velocity.y
 		);
+
+		// This assumes that there's no vertical squash and that the enemy is moving
+		// directly towards the player... I'll fix this later
+		let relativeVX = this.body.velocity.x - background.body.velocity.x;
+		let relativeVY = this.body.velocity.y - background.body.velocity.y;
+		if(relativeVX < 0 && -relativeVX > Math.abs(relativeVY)){
+			this.anims.play('enemy1 left');
+		}
+		else if(relativeVX > Math.abs(relativeVY)){
+			this.anims.play('enemy1 right');
+		}
+		else if(relativeVY < 0 && -relativeVY > Math.abs(relativeVX)){
+			this.anims.play('enemy1 up');
+		}
+		else{
+			this.anims.play('enemy1 down');
+		}
+
 
 		//console.log(this.tintTopLeft.toString(16));
 		// I had to make this monstrisity because apparently you can't just increment the value
