@@ -189,6 +189,7 @@ function update() {
 		else if(scene === 1 && gameState == 'ongoing'){
 			gameState = 'win';
 			timeText.setDepth(-1);
+			player.setDepth(-3);
 			end = this.add.image(300,300, "end");
 			end.setScale(.4);
 			//player.destroy();
