@@ -175,8 +175,8 @@ function update() {
 
 	timeText.setText('Time left: ' + ((60000-timeLeft.getElapsed())/1000).toString().substr(0, 4));
 	// Changing scenes
-    //if (this.input.keyboard.checkDown(cursors, 1000) && enemies.getChildren().length == 0){
-    if (this.input.keyboard.checkDown(cursors, 1000)){	
+    if (this.input.keyboard.checkDown(cursors, 1000) && enemies.getChildren().length == 0){
+    //if (this.input.keyboard.checkDown(cursors, 1000)){	
 		if(scene === 0) {
 	        changeScenes(this);
 		}
