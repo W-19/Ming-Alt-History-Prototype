@@ -28,6 +28,8 @@ var controls;
 var keyAttack;
 var playerAttackCooldown = 0;
 var cursors;
+var timeText;
+var gameState = 'ongoing';
 var scene = 0;
 
 function preload() {
@@ -124,15 +126,23 @@ function create() {
 
     this.physics.add.collider(player, enemies);
 
+	// Set a timer for the player- they have to finish the game before it ends
+	timeText = this.add.text(32, 32);
+	timeLeft = this.time.delayedCall(60000, onTimeout, [game], this); // 1 minute
+
 }
 
 function update() {
+
+	timeText.setText('Time left: ' + ((60000-timeLeft.getElapsed())/1000).toString().substr(0, 4));
 	// Changing scenes
     if (this.input.keyboard.checkDown(cursors, 1000) && enemies.getChildren().length == 0){
 		if(scene === 0) {
 	        changeScenes(this);
 		}
-		else if(scene === 1){
+		else if(scene === 1 && gameState == 'ongoing'){
+			gameState = 'win';
+			timeText.setDepth(-1);
 			this.add.text(400, 400, 'You win!\n\nThere are only 2 stages in this prototype\nbut we hope you enjoyed it!').setOrigin(0.5, 0.5);
 		}
     }
@@ -287,10 +297,19 @@ function changeScenes(game) {
     background.setImmovable(true);
 
 	player.setDepth(100); // bring the player back to the front
+	timeText.setDepth(101); // and the time text, of course
 
 	enemies.create(1400, 50);
 	enemies.create(1100, 130);
 	enemies.create(400, 800);
 	enemies.create(700, -190);
 	game.cameras.main.fadeOut(3000);
+}
+
+function onTimeout(game){
+	if(gameState == 'ongoing'){
+		gameState = 'loss';
+		this.add.text(400, 400, 'You ran out of time!').setOrigin(0.5, 0.5);
+		this.scene.pause();
+	}
 }
