@@ -76,10 +76,10 @@ function create() {
     player.setCollideWorldBounds(true);
 
     enemies = this.physics.add.group({classType: Enemy1, runChildUpdate: true});
-    enemy1_1 = enemies.create(200, 200);
-	enemy1_1.setOrigin(-0.5, -0.5); // doesn't seem to work
-	enemy1_2 = enemies.create(900, 300);
-	enemy1_3 = enemies.create(-300, 800);
+ //    enemy1_1 = enemies.create(200, 200);
+	// enemy1_1.setOrigin(-0.5, -0.5); // doesn't seem to work
+	// enemy1_2 = enemies.create(900, 300);
+	// enemy1_3 = enemies.create(-300, 800);
 
     this.anims.create({
         key: 'player left',
@@ -171,6 +171,11 @@ function update() {
 	 	text4.destroy();
 	 	text5.destroy();
 	 	timeLeft = this.time.delayedCall(60000, onTimeout, [game], this);
+
+	 	enemy1_1 = enemies.create(200, 200);
+		enemy1_1.setOrigin(-0.5, -0.5); // doesn't seem to work
+		enemy1_2 = enemies.create(900, 300);
+		enemy1_3 = enemies.create(-300, 800);
 	}
 
 	if(a != 1) timeText.setText('Time left: ' + ((60000-timeLeft.getElapsed())/1000).toString().substr(0, 4));
