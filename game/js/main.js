@@ -172,6 +172,7 @@ function update() {
 	 	text5.destroy();
 	 	timeLeft = this.time.delayedCall(60000, onTimeout, [game], this);
 
+	 	// Enemies spawn
 	 	enemy1_1 = enemies.create(200, 200);
 		enemy1_1.setOrigin(-0.5, -0.5); // doesn't seem to work
 		enemy1_2 = enemies.create(900, 300);
