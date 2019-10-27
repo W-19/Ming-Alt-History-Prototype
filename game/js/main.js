@@ -145,7 +145,7 @@ function create() {
 
 	// Set a timer for the player- they have to finish the game before it ends
 	timeText = this.add.text(32, 32);
-	timeLeft = this.time.delayedCall(60000, onTimeout, [game], this); // 1 minute
+	//timeLeft = this.time.delayedCall(60000, onTimeout, [game], this); // 1 minute
 
 	prologuebg = this.add.image(400, 300, 'prologuebg');
 	prologue = this.add.image(400, 300, 'prologue');
@@ -158,7 +158,7 @@ function create() {
 	a = 1;
  	
 }
-
+var timeLeft;
 function update() {
 	
 	if(this.input.keyboard.checkDown(sp, 1000) && a == 1){
@@ -173,7 +173,7 @@ function update() {
 	 	timeLeft = this.time.delayedCall(60000, onTimeout, [game], this);
 	}
 
-	timeText.setText('Time left: ' + ((60000-timeLeft.getElapsed())/1000).toString().substr(0, 4));
+	if(a != 1) timeText.setText('Time left: ' + ((60000-timeLeft.getElapsed())/1000).toString().substr(0, 4));
 	// Changing scenes
     if (this.input.keyboard.checkDown(cursors, 1000) && enemies.getChildren().length == 0){
     //if (this.input.keyboard.checkDown(cursors, 1000)){	
@@ -359,7 +359,7 @@ function playerInsideBuildings(){
 
 function changeScenes(game) {
 	game.cameras.main.once('camerafadeoutcomplete', function (camera) {
-		camera.fadeIn(6000);
+		camera.fadeIn(2000);
 	});
 	scene = 1;
 	background.setVisible(false);
@@ -375,7 +375,7 @@ function changeScenes(game) {
 	enemies.create(1100, 130);
 	enemies.create(400, 800);
 	enemies.create(700, -190);
-	game.cameras.main.fadeOut(3000);
+	game.cameras.main.fadeOut(2000);
 }
 
 function onTimeout(game){
