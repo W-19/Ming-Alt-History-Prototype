@@ -19,6 +19,7 @@ var config = {
 
 var game = new Phaser.Game(config);
 
+var prologue;
 var background;
 var player;
 var PLAYER_MS = 320; // ms = MoveSpeed
@@ -31,10 +32,13 @@ var cursors;
 var timeText;
 var gameState = 'ongoing';
 var scene = 0;
+var sp;
+var a;
 
 function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
-
+    this.load.image('prologue', 'assets/img/bga.jpg');
+    this.load.image('prologuebg', 'assets/img/prologuebg.jpg');
     this.load.image('city background', 'assets/img/city street & buildings.png');
 	this.load.image('darkside background', 'assets/img/darkside street & buildings.png');
 	this.load.spritesheet('player', 'assets/img/player.png', {frameWidth: 100, frameHeight: 100});
@@ -47,8 +51,14 @@ function preload() {
 
 function create() {
     cursors = this.input.keyboard.addKey('Enter');
+    sp = this.input.keyboard.addKey('Space');
+
+    
 
     background = this.physics.add.image(config.width / 2, config.height / 2, 'city background');
+
+    //prologue = this.physics.add.image(config.width, config.height, 'prologue');
+
     background.setOrigin(0.5, 0.5);
     background.setImmovable(true);
 
@@ -130,9 +140,21 @@ function create() {
 	timeText = this.add.text(32, 32);
 	timeLeft = this.time.delayedCall(60000, onTimeout, [game], this); // 1 minute
 
+	prologuebg = this.add.image(400, 300, 'prologuebg');
+	prologue = this.add.image(400, 300, 'prologue');
+	prologue.setScale(.4)
+	a = 1;
+ 	
 }
 
 function update() {
+	
+	if(this.input.keyboard.checkDown(sp, 1000) && a == 1){
+	 	prologue.destroy();
+	 	prologuebg.destroy();
+	 	a++;
+	 	timeLeft = this.time.delayedCall(60000, onTimeout, [game], this);
+	}
 
 	timeText.setText('Time left: ' + ((60000-timeLeft.getElapsed())/1000).toString().substr(0, 4));
 	// Changing scenes
@@ -145,6 +167,7 @@ function update() {
 			timeText.setDepth(-1);
 			this.add.text(400, 400, 'You win!\n\nThere are only 2 stages in this prototype\nbut we hope you enjoyed it!').setOrigin(0.5, 0.5);
 		}
+
     }
 
 	// Attacking
@@ -183,6 +206,8 @@ function update() {
 	else{
 		processPlayerMovement();
 	}
+
+
 }
 
 function processPlayerMovement(){
@@ -285,6 +310,7 @@ function playerInsideBuildings(){
 			;
 }
 
+
 function changeScenes(game) {
 	game.cameras.main.once('camerafadeoutcomplete', function (camera) {
 		camera.fadeIn(6000);
@@ -313,3 +339,4 @@ function onTimeout(game){
 		this.scene.pause();
 	}
 }
+
