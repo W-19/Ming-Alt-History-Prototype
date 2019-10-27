@@ -34,11 +34,18 @@ var gameState = 'ongoing';
 var scene = 0;
 var sp;
 var a;
+var text1;
+var text2;
+var text3;
+var text4;
+var text5;
+var end;
 
 function preload() {
     // Load the images, spritesheets, tilemaps, and audio; whatever we need for this prototype. Examples below.
     this.load.image('prologue', 'assets/img/bga.jpg');
     this.load.image('prologuebg', 'assets/img/prologuebg.jpg');
+    this.load.image('end', 'assets/img/bgb.jpg');
     this.load.image('city background', 'assets/img/city street & buildings.png');
 	this.load.image('darkside background', 'assets/img/darkside street & buildings.png');
 	this.load.spritesheet('player', 'assets/img/player.png', {frameWidth: 100, frameHeight: 100});
@@ -142,7 +149,12 @@ function create() {
 
 	prologuebg = this.add.image(400, 300, 'prologuebg');
 	prologue = this.add.image(400, 300, 'prologue');
-	prologue.setScale(.4)
+	prologue.setScale(.4);
+	text1 = this.add.text(50, 100, "2050 A.D., The Ming dynasty."); 
+	text2 = this.add.text(50, 200, 'Shadow: Your mission is to kill the target, but you have to be as soon');
+	text3 = this.add.text(50, 300, 'as possible. This is an order, make sure to be clean. No mercy.');
+	text4 = this.add.text(50, 400, 'You: Yes, sir.');
+	text5 = this.add.text(250, 500, 'Press "Space" to continue.');
 	a = 1;
  	
 }
@@ -153,19 +165,53 @@ function update() {
 	 	prologue.destroy();
 	 	prologuebg.destroy();
 	 	a++;
+	 	text1.destroy();
+	 	text2.destroy();
+	 	text3.destroy();
+	 	text4.destroy();
+	 	text5.destroy();
 	 	timeLeft = this.time.delayedCall(60000, onTimeout, [game], this);
 	}
 
 	timeText.setText('Time left: ' + ((60000-timeLeft.getElapsed())/1000).toString().substr(0, 4));
 	// Changing scenes
-    if (this.input.keyboard.checkDown(cursors, 1000) && enemies.getChildren().length == 0){
+    //if (this.input.keyboard.checkDown(cursors, 1000) && enemies.getChildren().length == 0){
+    if (this.input.keyboard.checkDown(cursors, 1000)){	
 		if(scene === 0) {
 	        changeScenes(this);
 		}
 		else if(scene === 1 && gameState == 'ongoing'){
 			gameState = 'win';
 			timeText.setDepth(-1);
-			this.add.text(400, 400, 'You win!\n\nThere are only 2 stages in this prototype\nbut we hope you enjoyed it!').setOrigin(0.5, 0.5);
+			end = this.add.image(300,300, "end");
+			end.setScale(.4);
+			//player.destroy();
+			text1 = this.add.text(50, 100, "In the dark room…"); 
+			text2 = this.add.text(50, 200, '(A young voice): Even you, are coming to kill me.');
+			text3 = this.add.text(50, 300, 'This voice is so familiar. Apparently, he knows you. Wait, is he…');
+			//text4 = this.add.text(50, 400, 'Press "Enter" to continue.');
+			this.add.text(250, 550, 'Press "Enter" to continue. ');
+		}
+		else if(scene === 1 && gameState =='win'){
+			//if(this.input.keyboard.checkDown(sp, 1000)){
+				text1.destroy();
+	 			text2.destroy();
+	 			text3.destroy();
+
+	 			text1 = this.add.text(50, 100, "He is the emperor. "); 
+				text2 = this.add.text(50, 200, 'Why is the emperor here? Your job is Jin Yi Wei, the intelligence');
+				text3 = this.add.text(50, 300, 'organization of the Ming dynasty. Your goal is supposed to be');
+				text4 = this.add.text(50, 400, 'protecting the emperor and his domination. Why is this happening?');
+				text5 = this.add.text(50, 500, ' Who wants to kill the emperor? You must investigate this...');
+				gameState = 'win2';
+		}
+		else if(scene === 1 && gameState =='win2'){
+				text1.destroy();
+	 			text2.destroy();
+	 			text3.destroy();
+	 			text4.destroy();
+				text5.destroy();
+				this.add.text(400, 400, 'You win!\n\nThere are only 2 stages in this prototype\nbut we hope you enjoyed it!').setOrigin(0.5, 0.5);
 		}
 
     }
